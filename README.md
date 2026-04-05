@@ -1,49 +1,31 @@
-services:
-  web:
-    build: ./web
-    depends_on:
-      - api
-    networks:
-      - urbaneats-net
+# UrbanEats Docker Multi-Service Application
 
-  api:
-    build: ./api
-    depends_on:
-      - db
-    restart: unless-stopped
-    networks:
-      - urbaneats-net
+This project showcases a **multi-container Docker setup** for a modern application. It demonstrates how different services interact within a single environment using Docker Compose.
 
-  db:
-    image: postgres:15-alpine
-    environment:
-      POSTGRES_PASSWORD: admin123
-    networks:
-      - urbaneats-net
+## Services Included
 
-  cache:
-    image: redis:7-alpine
-    networks:
-      - urbaneats-net
+- **Frontend (Web Service)** – Node.js based interface
+- **Backend API** – Handles application logic and requests
+- **Worker Service** – Processes background tasks
+- **PostgreSQL** – Database service
+- **Redis** – Caching layer
+- **RabbitMQ** – Message broker for async communication
+- **Nginx** – Reverse proxy for routing traffic
 
-  queue:
-    image: rabbitmq:3-management-alpine
-    ports:
-      - "15672:15672"
-    networks:
-      - urbaneats-net
+---
 
-  proxy:
-    image: nginx:alpine
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-    ports:
-      - "80:80"
-    depends_on:
-      - web
-      - api
-    networks:
-      - urbaneats-net
+##  Prerequisites
 
-networks:
-  urbaneats-net:
+Make sure the following are installed on your system:
+
+- Docker
+- Docker Compose (or Docker Desktop)
+
+---
+
+## Setup Instructions
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/nbajagain/urbaneats-docker-lab.git
