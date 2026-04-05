@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  frontend:
+    build: ./web
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    build: ./api
+    depends_on:
+      - database
+    restart: always
+    networks:
+      - app-network
+
+  database:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: urbaneats_db
+    networks:
+      - app-network
+
+  redis-cache:
+    image: redis:7-alpine
+    networks:
+      - app-network
+
+  message-broker:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "15672:15672"
+    networks:
+      - app-network
+
+  reverse-proxy:
+    image: nginx:alpine
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8080:80"
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
