@@ -28,4 +28,4 @@ Make sure the following are installed on your system:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/nbajagain/urbaneats-docker-lab.git
+https://github.com/spoudel26/urbaneats-Docker-Labs-Sujana-Poudel
